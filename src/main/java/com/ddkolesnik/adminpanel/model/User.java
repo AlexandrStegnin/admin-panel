@@ -51,15 +51,6 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    @Column
-    private boolean accountNonExpired = true;
-
-    @Column
-    private boolean accountNonLocked = true;
-
-    @Column
-    private boolean credentialsNonExpired = true;
-
     @Transient
     private boolean enabled;
 
@@ -90,17 +81,17 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return accountNonExpired;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return accountNonLocked;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return credentialsNonExpired;
+        return true;
     }
 
     @Override
@@ -110,23 +101,19 @@ public class User implements UserDetails {
                 isCredentialsNonExpired();
     }
 
+    public User() {}
+
     public User(String login, String passwordHash, boolean enabled, boolean accountNonExpired,
                 boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> roles) {
         this.login = login;
         this.passwordHash = passwordHash;
         this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
         this.roles = roles.stream().map(Role::new).collect(Collectors.toSet());
     }
 
     public User(UserDetails userDetails) {
         this.login = userDetails.getUsername();
         this.enabled = userDetails.isEnabled();
-        this.accountNonExpired = userDetails.isAccountNonExpired();
-        this.credentialsNonExpired = userDetails.isCredentialsNonExpired();
-        this.accountNonLocked = userDetails.isAccountNonLocked();
         this.roles = userDetails.getAuthorities().stream().map(Role::new).collect(Collectors.toSet());
     }
 }
