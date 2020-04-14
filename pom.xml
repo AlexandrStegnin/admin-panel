@@ -13,7 +13,16 @@
     <version>1.0</version>
     <name>admin-panel</name>
     <description>Administration panel for ddkolesnik.com</description>
-
+    <developers>
+        <developer>
+            <id>Stegnin</id>
+            <email>alexandr.stegnin@mail.ru</email>
+            <name>Alexandr Stegnin</name>
+            <roles>
+                <role>Developer</role>
+            </roles>
+        </developer>
+    </developers>
     <properties>
         <java.version>1.8</java.version>
         <vaadin.version>14.1.23</vaadin.version>
@@ -22,7 +31,7 @@
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-rest</artifactId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -48,10 +57,33 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--            <scope>runtime</scope>-->
+<!--        </dependency>-->
+
+        <!-- For use JWT authorization and authentication -->
+
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>RELEASE</version>
+        </dependency>
+
+        <!-- For use json serialize/deserialize -->
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+            <version>2.1.3.RELEASE</version>
+        </dependency>
+
+        <!-- For create metamodel with Hibernate -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-jpamodelgen</artifactId>
+            <version>RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
