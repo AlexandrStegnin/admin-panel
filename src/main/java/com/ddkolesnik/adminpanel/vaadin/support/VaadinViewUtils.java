@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.server.InputStreamFactory;
 import com.vaadin.flow.server.StreamResource;
@@ -172,6 +173,12 @@ public class VaadinViewUtils {
         Html icon = new Html("<i class=\"material-icons\" style=\"" + iconPadding + "\">" + iconType + "</i>");
         button.setIcon(icon);
         return button;
+    }
+
+    public static Image getLogo(int sizeInPx) {
+        Image img = new Image("icons/logo.png", "ДДКолесникъ");
+        img.setHeight(sizeInPx + "px");
+        return img;
     }
 
 }

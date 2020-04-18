@@ -16,5 +16,7 @@ public class Constant {
     public static final String APP_TOKEN_PAGE = "app/tokens";
 
     public static final String LOGIN_PAGE = "login";
+    public static final String ADMIN_PAGE = "admin";
+
 
 }
