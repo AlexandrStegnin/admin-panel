@@ -11,8 +11,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.material.Material;
 
-import static com.ddkolesnik.adminpanel.configuration.support.Constant.APP_TOKEN_PAGE;
-import static com.ddkolesnik.adminpanel.configuration.support.Constant.LOGIN_PAGE;
+import static com.ddkolesnik.adminpanel.configuration.support.Location.APP_TOKEN_PAGE;
+import static com.ddkolesnik.adminpanel.configuration.support.Location.LOGIN_PAGE;
 
 /**
  * @author Alexandr Stegnin

@@ -8,7 +8,6 @@ import com.ddkolesnik.adminpanel.vaadin.custom.CustomAppLayout;
 import com.ddkolesnik.adminpanel.vaadin.form.AppTokenForm;
 import com.ddkolesnik.adminpanel.vaadin.support.VaadinViewUtils;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -20,7 +19,7 @@ import com.vaadin.flow.router.Route;
 
 import java.util.List;
 
-import static com.ddkolesnik.adminpanel.configuration.support.Constant.APP_TOKEN_PAGE;
+import static com.ddkolesnik.adminpanel.configuration.support.Location.APP_TOKEN_PAGE;
 
 /**
  * @author Alexandr Stegnin
@@ -28,14 +27,12 @@ import static com.ddkolesnik.adminpanel.configuration.support.Constant.APP_TOKEN
 
 @PageTitle("ТОКЕНЫ")
 @Route(value = APP_TOKEN_PAGE, layout = MainLayout.class)
-@HtmlImport("../VAADIN/grid-style.html")
-@HtmlImport("../VAADIN/form-elements-style.html")
 public class AppTokenView extends CustomAppLayout {
 
     private final AppTokenService appTokenService;
-    private Grid<AppToken> grid;
+    private final Grid<AppToken> grid;
     private final Button addNewBtn;
-    private ListDataProvider<AppToken> dataProvider;
+    private final ListDataProvider<AppToken> dataProvider;
     private AppTokenForm appTokenForm;
 
     public AppTokenView(AppTokenService appTokenService, UserService userService) {
