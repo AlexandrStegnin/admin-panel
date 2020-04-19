@@ -8,18 +8,15 @@ import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.theme.Theme;
-import com.vaadin.flow.theme.material.Material;
 
-import static com.ddkolesnik.adminpanel.configuration.support.Location.APP_TOKEN_PAGE;
+import static com.ddkolesnik.adminpanel.configuration.support.Location.ADMIN_PAGE;
 import static com.ddkolesnik.adminpanel.configuration.support.Location.LOGIN_PAGE;
 
 /**
  * @author Alexandr Stegnin
  */
 
-@Route(LOGIN_PAGE)
-@Theme(value = Material.class, variant = Material.LIGHT)
+@Route(value = LOGIN_PAGE, layout = MainLayout.class)
 public class LoginView extends HorizontalLayout {
 
     private final AuthRepository authRepository;
@@ -44,7 +41,7 @@ public class LoginView extends HorizontalLayout {
             boolean authenticated = authenticate(e);
             if (authenticated) {
                 loginForm.close();
-                this.getUI().ifPresent(ui -> ui.navigate(APP_TOKEN_PAGE));
+                getUI().ifPresent(ui -> ui.navigate(ADMIN_PAGE));
             } else {
                 loginForm.setError(true);
             }
