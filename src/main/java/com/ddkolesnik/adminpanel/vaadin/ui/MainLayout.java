@@ -4,11 +4,13 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.InitialPageSettings;
 import com.vaadin.flow.server.PageConfigurator;
+import com.vaadin.flow.theme.Theme;
+import com.vaadin.flow.theme.material.Material;
 
 /**
  * @author Alexandr Stegnin
  */
-
+@Theme(value = Material.class, variant = Material.LIGHT)
 public class MainLayout extends Div implements RouterLayout, PageConfigurator {
 
     @Override
