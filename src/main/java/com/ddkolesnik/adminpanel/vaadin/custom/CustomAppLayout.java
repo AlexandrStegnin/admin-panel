@@ -1,10 +1,11 @@
 package com.ddkolesnik.adminpanel.vaadin.custom;
 
 import com.ddkolesnik.adminpanel.configuration.security.SecurityUtils;
-import com.ddkolesnik.adminpanel.configuration.support.Constant;
 import com.ddkolesnik.adminpanel.model.User;
 import com.ddkolesnik.adminpanel.repository.AuthRepository;
 import com.ddkolesnik.adminpanel.service.UserService;
+import com.ddkolesnik.adminpanel.vaadin.support.VaadinViewUtils;
+import com.ddkolesnik.adminpanel.vaadin.ui.AppTokenView;
 import com.ddkolesnik.adminpanel.vaadin.ui.LoginView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -16,28 +17,34 @@ import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.dom.Element;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static com.ddkolesnik.adminpanel.configuration.support.Location.LOGIN_PAGE;
+
 
 public class CustomAppLayout extends AppLayout {
 
     @Autowired
     private AuthRepository auth;
 
-    private UserService userService;
+    private final UserService userService;
 
     private AppLayoutMenu menu;
 
-    private User currentDbUser;
+    private final User currentDbUser;
 
     private void init() {
         menu = createMenu();
         menu.getElement().getStyle().set("padding", "10px");
-        Image img = new Image("images/logo.jpg", "ToDo List Logo");
-        img.setHeight("35px");
-        setBranding(img);
-
+        Image img = VaadinViewUtils.getLogo(51);
+        menu.addMenuItem(img);
         AppLayoutMenuItem logoutItem = new AppLayoutMenuItem(VaadinIcon.SIGN_OUT.create(), "ВЫЙТИ", e -> logout());
         AppLayoutMenuItem loginItem = new AppLayoutMenuItem(VaadinIcon.SIGN_IN.create(), "ВОЙТИ", e -> goToPage(LoginView.class));
+        AppLayoutMenuItem usersItem = new AppLayoutMenuItem(VaadinIcon.USER.create(), "ПОЛЬЗОВАТЕЛИ", e -> goToPage(LoginView.class));
+        AppLayoutMenuItem rolesItem = new AppLayoutMenuItem(VaadinIcon.SHIELD.create(), "РОЛИ", e -> goToPage(LoginView.class));
+        AppLayoutMenuItem tokensItem = new AppLayoutMenuItem(VaadinIcon.LOCK.create(), "ТОКЕНЫ", e -> goToPage(AppTokenView.class));
         if (SecurityUtils.isUserLoggedIn()) {
+            menu.addMenuItem(usersItem);
+            menu.addMenuItem(rolesItem);
+            menu.addMenuItem(tokensItem);
             menu.addMenuItem(logoutItem);
         } else {
             menu.addMenuItem(loginItem);
@@ -61,7 +68,7 @@ public class CustomAppLayout extends AppLayout {
 
     private void logout() {
         Notification.show("ВЫ УСПЕШНО ВЫШЛИ ИЗ СИСТЕМЫ!", 3000, Notification.Position.TOP_END);
-        this.getUI().ifPresent(ui -> ui.navigate(Constant.LOGIN_PAGE));
+        this.getUI().ifPresent(ui -> ui.navigate(LOGIN_PAGE));
         auth.logout();
     }
 
