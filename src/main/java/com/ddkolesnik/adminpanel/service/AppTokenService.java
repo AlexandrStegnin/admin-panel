@@ -36,4 +36,8 @@ public class AppTokenService {
         return appTokenRepository.findAll();
     }
 
+    public Long count() {
+        return appTokenRepository.count();
+    }
+
 }
