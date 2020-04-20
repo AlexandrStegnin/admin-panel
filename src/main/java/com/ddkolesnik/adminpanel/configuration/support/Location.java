@@ -24,6 +24,8 @@ public class Location {
 
     public static final String USERS_PAGE = "users";
 
+    public static final String ROLES_PAGE = "roles";
+
     public static final Locale LOCALE_RU = new Locale("ru", "RU");
 
     public static final String LOGOUT_URL = PATH_SEPARATOR + LOGOUT_PAGE;
