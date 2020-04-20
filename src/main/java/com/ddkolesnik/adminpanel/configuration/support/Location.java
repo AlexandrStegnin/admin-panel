@@ -18,7 +18,7 @@ public class Location {
     public static final String LOGIN_PAGE = "login";
     public static final String LOGOUT_PAGE = "logout";
 
-    public static final String APP_TOKEN_PAGE = "app/tokens";
+    public static final String APP_TOKEN_PAGE = "tokens";
 
     public static final String ADMIN_PAGE = "admin";
 
