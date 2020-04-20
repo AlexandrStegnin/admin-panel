@@ -2,18 +2,25 @@ package com.ddkolesnik.adminpanel.service;
 
 import com.ddkolesnik.adminpanel.model.User;
 import com.ddkolesnik.adminpanel.repository.UserRepository;
+import com.vaadin.flow.component.upload.receivers.MemoryBuffer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.*;
 
 import static com.ddkolesnik.adminpanel.configuration.support.Constant.ROLE_USER;
+import static com.ddkolesnik.adminpanel.configuration.support.Location.PATH_SEPARATOR;
 
 
 /**
@@ -21,19 +28,24 @@ import static com.ddkolesnik.adminpanel.configuration.support.Constant.ROLE_USER
  */
 
 @Service
+@PropertySource("classpath:private.properties")
 @Transactional(readOnly = true)
 public class UserService {
 
-//    @Value("${spring.config.file-upload-directory}")
-//    private String FILE_UPLOAD_DIRECTORY;
+    @Value("${spring.config.file-upload-directory}")
+    private String FILE_UPLOAD_DIRECTORY;
+
+    // TODO: 20.04.2020 Выбрасывать исключения, если пользователь не найден
 
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder encoder;
+    private final UserProfileService userProfileService;
 
     @Autowired
     public UserService(UserRepository userRepository, BCryptPasswordEncoder encoder,
-                       RoleService roleService) {
+                       RoleService roleService, UserProfileService userProfileService) {
+        this.userProfileService = userProfileService;
         this.userRepository = userRepository;
         this.encoder = encoder;
         this.roleService = roleService;
@@ -77,7 +89,7 @@ public class UserService {
      * @return String hash
      */
     private String passwordToHash(String password) {
-        if (Objects.equals(null, password) || StringUtils.isEmpty(password)) {
+        if (Objects.equals(null, password) || org.springframework.util.StringUtils.isEmpty(password)) {
             return null;
         }
         return encoder.encode(password);
@@ -101,6 +113,7 @@ public class UserService {
             secUser.setPasswordHash(dbUser.getPasswordHash());
         }
         if (Objects.equals(null, secUser.getRoles())) secUser.setRoles(dbUser.getRoles());
+        if (Objects.equals(null, secUser.getProfile())) secUser.setProfile(dbUser.getProfile());
         return userRepository.save(secUser);
     }
 
@@ -117,6 +130,7 @@ public class UserService {
 
     @Transactional
     public void changePassword(long userId, String passwordNew) {
+        //TODO добавть проверок для пароля
         User userDb = getById(userId);
         userDb.setPasswordHash(passwordToHash(passwordNew));
         userRepository.save(userDb);
@@ -128,6 +142,51 @@ public class UserService {
 
     public boolean isLoginFree(String login) {
         return Objects.equals(null, findByLogin(login));
+    }
+
+    public boolean emailIsBusy(String email) {
+        return userProfileService.emailIsBusy(email);
+    }
+
+    public void saveUserAvatar(User user, MemoryBuffer buffer) {
+        if (!"".equals(buffer.getFileName())) {
+            final File[] targetFile = {null};
+            dropUserDir(user); // todo проверять наличие файла аватара в папке и удалять
+            createUserDir(user);
+            String fileName = buffer.getFileName();
+            targetFile[0] = new File(FILE_UPLOAD_DIRECTORY + user.getLogin() + PATH_SEPARATOR + fileName);
+            try {
+                Files.copy(buffer.getInputStream(), targetFile[0].toPath(), StandardCopyOption.REPLACE_EXISTING);
+            } catch (IOException e) {
+                throw new RuntimeException("Ошибка копирования файла", e);
+            }
+            user.getProfile().setAvatar(fileName);
+        }
+    }
+
+    private void createUserDir(User user) {
+        Path userDir = Paths.get(FILE_UPLOAD_DIRECTORY + user.getLogin());
+        if (!Files.exists(userDir)) {
+            try {
+                Files.createDirectories(userDir);
+            } catch (IOException e) {
+                throw new RuntimeException("Ошибка при создании директории: " + userDir.getFileName().toString(), e);
+            }
+        }
+    }
+
+    private void dropUserDir(User user) {
+        Path userDir = Paths.get(FILE_UPLOAD_DIRECTORY + user.getLogin());
+        if (Files.exists(userDir)) {
+            try {
+                Files.walk(userDir)
+                        .sorted(Comparator.reverseOrder())
+                        .map(Path::toFile)
+                        .forEach(File::delete);
+            } catch (IOException e) {
+                throw new RuntimeException("Ошибка при удалении папки с изображениями пользователя", e);
+            }
+        }
     }
 
     public boolean matchesPasswords(String oldPass, String dbPass) {
