@@ -48,7 +48,7 @@ public class UserView extends CustomAppLayout {
         this.grid = new Grid<>(); // инициализация Grid'a
         this.dataProvider = new ListDataProvider<>(getAllUsers()); // инициализация провайдера с вставкой в него данных
         this.addNewBtn = VaadinViewUtils.createButton(
-                "СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ", "add", "submit", "8px 13px 28px 7px");
+                "СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ", "add", "submit", "8px 13px 8px 13px");
         init(); // инициализируем форму
     }
 

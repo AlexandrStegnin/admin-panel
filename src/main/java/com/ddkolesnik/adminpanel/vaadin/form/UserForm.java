@@ -66,8 +66,8 @@ public class UserForm extends Dialog {
         this.userBinder = new BeanValidationBinder<>(User.class);
         this.profileBinder = new BeanValidationBinder<>(UserProfile.class);
         this.operation = operation;
-        this.submit = VaadinViewUtils.createButton(operation.name.toUpperCase(), "", "submit", "8px 10px 22px 8px");
-        this.cancel = VaadinViewUtils.createButton("ОТМЕНИТЬ", "", "cancel", "8px 10px 22px 8px");
+        this.submit = VaadinViewUtils.createButton(operation.name.toUpperCase(), "", "submit", "8px 10px 8px 10px");
+        this.cancel = VaadinViewUtils.createButton("ОТМЕНИТЬ", "", "cancel", "8px 10px 8px 10px");
         this.buttons = new HorizontalLayout();
         this.content = new VerticalLayout();
         this.user = user;
