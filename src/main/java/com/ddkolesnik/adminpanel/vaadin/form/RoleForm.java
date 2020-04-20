@@ -103,7 +103,6 @@ public class RoleForm extends Dialog {
         buttons.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
 
         content.setHeightFull();
-        setWidth("400px");
         setHeightFull();
         setCloseOnEsc(false);
         setCloseOnOutsideClick(false);
