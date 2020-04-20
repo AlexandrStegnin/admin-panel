@@ -40,6 +40,7 @@ public class CustomAppLayout extends AppLayout implements BeforeEnterObserver {
         Image img = VaadinViewUtils.getLogo(51);
         addToNavbar(img);
         if (SecurityUtils.isUserLoggedIn()) {
+            addMenuTab("АДМИНИСТРИРОВАНИЕ", AdminView.class, VaadinIcon.COG.create());
             addMenuTab("ПОЛЬЗОВАТЕЛИ", LoginView.class, VaadinIcon.USER.create());
             addMenuTab("РОЛИ", AdminView.class, VaadinIcon.SHIELD.create());
             addMenuTab("ТОКЕНЫ", AdminView.class, VaadinIcon.LOCK.create());
