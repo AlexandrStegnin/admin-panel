@@ -46,7 +46,7 @@ public class AdminView extends CustomAppLayout {
                 .set("margin", "15%");
 
         row.add(createDiv("people", "bg-indigo", "ПОЛЬЗОВАТЕЛИ", userService.count().toString(), UserView.class));
-        row.add(createDiv("security", "bg-deep-orange", "РОЛИ", roleService.count().toString(), AppTokenView.class));
+        row.add(createDiv("security", "bg-deep-orange", "РОЛИ", roleService.count().toString(), RoleView.class));
         row.add(createDiv("fingerprint", "bg-purple", "ТОКЕНЫ", appTokenService.count().toString(), AppTokenView.class));
         container.add(row);
         return container;
