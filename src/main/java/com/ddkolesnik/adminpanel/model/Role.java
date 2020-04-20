@@ -16,7 +16,7 @@ import static com.ddkolesnik.adminpanel.configuration.support.Constant.ROLE_PREF
 
 @Data
 @Entity
-@Table(name = "ROLES")
+@Table(name = "role")
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false, of = "id")
 public class Role extends AbstractEntity implements GrantedAuthority {
