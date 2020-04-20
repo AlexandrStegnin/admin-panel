@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Entity
-@Table(name = "USERS")
+@Table(name = "app_user")
 @EqualsAndHashCode(of = {"id", "login"})
 public class User implements UserDetails {
 
@@ -38,12 +38,12 @@ public class User implements UserDetails {
     private String login;
 
     @JsonIgnore
-    @Column(name = "password", length = 60)
+    @Column(name = "password_hash", length = 60)
     private String passwordHash;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
-            name = "USERS_ROLES",
+            name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
             foreignKey = @ForeignKey(name = "user_role_to_user"),
@@ -51,10 +51,22 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserProfile profile;
+
+    @Column
+    private boolean accountNonExpired = true;
+
+    @Column
+    private boolean accountNonLocked = true;
+
+    @Column
+    private boolean credentialsNonExpired = true;
+
     @Transient
     private boolean enabled;
 
-    //необходимо при создании нового пользователя, что бы задать пароль 
+    //необходимо при создании нового пользователя, что бы задать пароль
     private transient String password;
 
     @JsonIgnore
@@ -101,19 +113,28 @@ public class User implements UserDetails {
                 isCredentialsNonExpired();
     }
 
-    public User() {}
+    public User() {
+        this.profile = new UserProfile();
+        this.profile.setUser(this);
+    }
 
     public User(String login, String passwordHash, boolean enabled, boolean accountNonExpired,
                 boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> roles) {
         this.login = login;
         this.passwordHash = passwordHash;
         this.enabled = enabled;
+        this.accountNonExpired = accountNonExpired;
+        this.credentialsNonExpired = credentialsNonExpired;
+        this.accountNonLocked = accountNonLocked;
         this.roles = roles.stream().map(Role::new).collect(Collectors.toSet());
     }
 
     public User(UserDetails userDetails) {
         this.login = userDetails.getUsername();
         this.enabled = userDetails.isEnabled();
+        this.accountNonExpired = userDetails.isAccountNonExpired();
+        this.credentialsNonExpired = userDetails.isCredentialsNonExpired();
+        this.accountNonLocked = userDetails.isAccountNonLocked();
         this.roles = userDetails.getAuthorities().stream().map(Role::new).collect(Collectors.toSet());
     }
 }
