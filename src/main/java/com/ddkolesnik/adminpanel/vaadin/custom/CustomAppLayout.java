@@ -7,6 +7,7 @@ import com.ddkolesnik.adminpanel.service.UserService;
 import com.ddkolesnik.adminpanel.vaadin.support.VaadinViewUtils;
 import com.ddkolesnik.adminpanel.vaadin.ui.AdminView;
 import com.ddkolesnik.adminpanel.vaadin.ui.LoginView;
+import com.ddkolesnik.adminpanel.vaadin.ui.UserView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.html.Image;
@@ -41,7 +42,7 @@ public class CustomAppLayout extends AppLayout implements BeforeEnterObserver {
         addToNavbar(img);
         if (SecurityUtils.isUserLoggedIn()) {
             addMenuTab("АДМИНИСТРИРОВАНИЕ", AdminView.class, VaadinIcon.COG.create());
-            addMenuTab("ПОЛЬЗОВАТЕЛИ", LoginView.class, VaadinIcon.USER.create());
+            addMenuTab("ПОЛЬЗОВАТЕЛИ", UserView.class, VaadinIcon.USER.create());
             addMenuTab("РОЛИ", AdminView.class, VaadinIcon.SHIELD.create());
             addMenuTab("ТОКЕНЫ", AdminView.class, VaadinIcon.LOCK.create());
             addMenuTab("ВЫЙТИ", LoginView.class, VaadinIcon.SIGN_OUT.create());
@@ -69,11 +70,12 @@ public class CustomAppLayout extends AppLayout implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        String tabName = navigationTargetToTab.get(event.getNavigationTarget()).getElement().getChild(0).getText();
+        Tab selectedTab = navigationTargetToTab.get(event.getNavigationTarget());
+        tabs.setSelectedTab(selectedTab);
+        String tabName = selectedTab.getElement().getText();
         if (tabName.equalsIgnoreCase("ВЫЙТИ")) {
             logout();
         }
-        tabs.setSelectedTab(navigationTargetToTab.get(event.getNavigationTarget()));
     }
 
     private void addMenuTab(String label, Class<? extends Component> target, Icon icon) {
