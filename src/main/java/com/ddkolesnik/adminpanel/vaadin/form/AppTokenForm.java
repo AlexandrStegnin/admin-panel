@@ -35,7 +35,7 @@ public class AppTokenForm extends Dialog {
     private final Button cancel;
     private final HorizontalLayout buttons;
     private final VerticalLayout content;
-    private Button submit;
+    private final Button submit;
     private boolean canceled = false;
 
     public AppTokenForm(OperationEnum operation, AppToken appToken, AppTokenService appTokenService) {
