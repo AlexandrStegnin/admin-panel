@@ -7,6 +7,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginOverlay;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import static com.ddkolesnik.adminpanel.configuration.support.Location.ADMIN_PAGE;
@@ -16,6 +17,7 @@ import static com.ddkolesnik.adminpanel.configuration.support.Location.LOGIN_PAG
  * @author Alexandr Stegnin
  */
 
+@PageTitle("АВТОРИЗАЦИЯ")
 @Route(value = LOGIN_PAGE, layout = MainLayout.class)
 public class LoginView extends HorizontalLayout {
 
