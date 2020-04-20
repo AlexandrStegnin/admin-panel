@@ -5,63 +5,53 @@ import com.ddkolesnik.adminpanel.model.User;
 import com.ddkolesnik.adminpanel.repository.AuthRepository;
 import com.ddkolesnik.adminpanel.service.UserService;
 import com.ddkolesnik.adminpanel.vaadin.support.VaadinViewUtils;
-import com.ddkolesnik.adminpanel.vaadin.ui.AppTokenView;
+import com.ddkolesnik.adminpanel.vaadin.ui.AdminView;
 import com.ddkolesnik.adminpanel.vaadin.ui.LoginView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
-import com.vaadin.flow.component.applayout.AppLayoutMenu;
-import com.vaadin.flow.component.applayout.AppLayoutMenuItem;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.dom.Element;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.router.BeforeEnterEvent;
+import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.RouterLink;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.ddkolesnik.adminpanel.configuration.support.Location.LOGIN_PAGE;
 
-
-public class CustomAppLayout extends AppLayout {
+public class CustomAppLayout extends AppLayout implements BeforeEnterObserver {
 
     @Autowired
     private AuthRepository auth;
 
-    private final UserService userService;
-
-    private AppLayoutMenu menu;
+    private final Tabs tabs = new Tabs();
+    private final Map<Class<? extends Component>, Tab> navigationTargetToTab = new HashMap<>();
 
     private final User currentDbUser;
 
     private void init() {
-        menu = createMenu();
-        menu.getElement().getStyle().set("padding", "10px");
+        tabs.setSizeFull();
         Image img = VaadinViewUtils.getLogo(51);
-        menu.addMenuItem(img);
-        AppLayoutMenuItem logoutItem = new AppLayoutMenuItem(VaadinIcon.SIGN_OUT.create(), "ВЫЙТИ", e -> logout());
-        AppLayoutMenuItem loginItem = new AppLayoutMenuItem(VaadinIcon.SIGN_IN.create(), "ВОЙТИ", e -> goToPage(LoginView.class));
-        AppLayoutMenuItem usersItem = new AppLayoutMenuItem(VaadinIcon.USER.create(), "ПОЛЬЗОВАТЕЛИ", e -> goToPage(LoginView.class));
-        AppLayoutMenuItem rolesItem = new AppLayoutMenuItem(VaadinIcon.SHIELD.create(), "РОЛИ", e -> goToPage(LoginView.class));
-        AppLayoutMenuItem tokensItem = new AppLayoutMenuItem(VaadinIcon.LOCK.create(), "ТОКЕНЫ", e -> goToPage(AppTokenView.class));
+        addToNavbar(img);
         if (SecurityUtils.isUserLoggedIn()) {
-            menu.addMenuItem(usersItem);
-            menu.addMenuItem(rolesItem);
-            menu.addMenuItem(tokensItem);
-            menu.addMenuItem(logoutItem);
+            addMenuTab("ПОЛЬЗОВАТЕЛИ", LoginView.class, VaadinIcon.USER.create());
+            addMenuTab("РОЛИ", AdminView.class, VaadinIcon.SHIELD.create());
+            addMenuTab("ТОКЕНЫ", AdminView.class, VaadinIcon.LOCK.create());
+            addMenuTab("ВЫЙТИ", LoginView.class, VaadinIcon.SIGN_OUT.create());
+            tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
         } else {
-            menu.addMenuItem(loginItem);
+            addMenuTab("ВОЙТИ", LoginView.class, VaadinIcon.SIGN_IN.create());
         }
-
-        menu.getElement().getChildren().forEach(this::stylizeItem);
-
-    }
-
-    private void stylizeItem(Element item) {
-        item.getStyle().set("font-size", "16px");
-        item.getStyle().set("font-weight", "bold");
-        item.getStyle().set("color", "#ac1455");
+        addToNavbar(tabs);
     }
 
     public CustomAppLayout(UserService userService) {
-        this.userService = userService;
         this.currentDbUser = userService.findByLogin(SecurityUtils.getUsername());
         init();
     }
@@ -72,17 +62,30 @@ public class CustomAppLayout extends AppLayout {
         auth.logout();
     }
 
-    private void goToPage(Class<? extends Component> clazz) {
-        getUI().ifPresent(ui -> ui.navigate(clazz));
-    }
-
-    protected void reload() {
-        menu.clearMenuItems();
-        init();
-    }
-
     protected User getCurrentDbUser() {
         return currentDbUser;
     }
 
+    @Override
+    public void beforeEnter(BeforeEnterEvent event) {
+        String tabName = navigationTargetToTab.get(event.getNavigationTarget()).getElement().getChild(0).getText();
+        if (tabName.equalsIgnoreCase("ВЫЙТИ")) {
+            logout();
+        }
+        tabs.setSelectedTab(navigationTargetToTab.get(event.getNavigationTarget()));
+    }
+
+    private void addMenuTab(String label, Class<? extends Component> target, Icon icon) {
+        RouterLink link = new RouterLink(label, target);
+        icon.getStyle().set("margin-left", "5px");
+        link.add(icon);
+        link.getStyle().set("color", "#6200ee")
+                        .set("text-decoration", "none");
+        Tab tab = new Tab(link);
+        navigationTargetToTab.put(target, tab);
+        tab.getStyle()
+                .set("font-size", "16px")
+                .set("font-weight", "bold");
+        tabs.add(tab);
+    }
 }
