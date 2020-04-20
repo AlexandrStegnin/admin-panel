@@ -6,6 +6,7 @@ import com.ddkolesnik.adminpanel.repository.AuthRepository;
 import com.ddkolesnik.adminpanel.service.UserService;
 import com.ddkolesnik.adminpanel.vaadin.support.VaadinViewUtils;
 import com.ddkolesnik.adminpanel.vaadin.ui.AdminView;
+import com.ddkolesnik.adminpanel.vaadin.ui.AppTokenView;
 import com.ddkolesnik.adminpanel.vaadin.ui.LoginView;
 import com.ddkolesnik.adminpanel.vaadin.ui.UserView;
 import com.vaadin.flow.component.Component;
@@ -44,7 +45,7 @@ public class CustomAppLayout extends AppLayout implements BeforeEnterObserver {
             addMenuTab("АДМИНИСТРИРОВАНИЕ", AdminView.class, VaadinIcon.COG.create());
             addMenuTab("ПОЛЬЗОВАТЕЛИ", UserView.class, VaadinIcon.USER.create());
             addMenuTab("РОЛИ", AdminView.class, VaadinIcon.SHIELD.create());
-            addMenuTab("ТОКЕНЫ", AdminView.class, VaadinIcon.LOCK.create());
+            addMenuTab("ТОКЕНЫ", AppTokenView.class, VaadinIcon.LOCK.create());
             addMenuTab("ВЫЙТИ", LoginView.class, VaadinIcon.SIGN_OUT.create());
             tabs.setOrientation(Tabs.Orientation.HORIZONTAL);
         } else {
