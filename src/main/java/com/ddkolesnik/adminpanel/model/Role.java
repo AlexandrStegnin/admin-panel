@@ -1,5 +1,6 @@
 package com.ddkolesnik.adminpanel.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -34,6 +35,7 @@ public class Role extends AbstractEntity implements GrantedAuthority {
     private String title;
 
     @Override
+    @JsonIgnore
     public String getAuthority() {
         return title.startsWith(ROLE_PREFIX) ? title : ROLE_PREFIX + title;
     }

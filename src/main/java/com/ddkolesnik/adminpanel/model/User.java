@@ -51,16 +51,19 @@ public class User implements UserDetails {
     )
     private Set<Role> roles;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserProfile profile;
 
     @Column
+    @JsonIgnore
     private boolean accountNonExpired = true;
 
     @Column
+    @JsonIgnore
     private boolean accountNonLocked = true;
 
     @Column
+    @JsonIgnore
     private boolean credentialsNonExpired = true;
 
     @Transient
@@ -107,6 +110,7 @@ public class User implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return isAccountNonExpired() &&
                 isAccountNonLocked() &&
