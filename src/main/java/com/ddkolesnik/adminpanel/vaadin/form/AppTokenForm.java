@@ -45,8 +45,8 @@ public class AppTokenForm extends Dialog {
         this.appTokenService = appTokenService;
         this.operation = operation;
         this.submit = VaadinViewUtils.createButton(
-                operation.name.toUpperCase(), "", "submit", "8px 10px 19px 6px");
-        this.cancel = VaadinViewUtils.createButton("ОТМЕНИТЬ", "", "cancel", "8px 10px 19px 6px");
+                operation.name.toUpperCase(), "", "submit", "8px 10px 8px 10px");
+        this.cancel = VaadinViewUtils.createButton("ОТМЕНИТЬ", "", "cancel", "8px 10px 8px 10px");
         this.buttons = new HorizontalLayout();
         this.content = new VerticalLayout();
         this.appToken = appToken;

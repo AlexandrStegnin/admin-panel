@@ -40,7 +40,7 @@ public class AppTokenView extends CustomAppLayout {
         this.appTokenService = appTokenService;
         this.grid = new Grid<>();
         this.dataProvider = new ListDataProvider<>(getAll());
-        this.addNewBtn = VaadinViewUtils.createButton("СОЗДАТЬ ТОКЕН", "add", "submit", "8px 13px 28px 7px");
+        this.addNewBtn = VaadinViewUtils.createButton("СОЗДАТЬ ТОКЕН", "add", "submit", "8px 13px 8px 13px");
         init();
     }
 
@@ -65,7 +65,7 @@ public class AppTokenView extends CustomAppLayout {
                 .setEditorComponent(new Div())
                 .setFlexGrow(2)
                 .setHeader("ДЕЙСТВИЯ");
-
+        grid.setClassName("my-grid");
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.add(addNewBtn, grid);
         verticalLayout.setAlignItems(FlexComponent.Alignment.END);
