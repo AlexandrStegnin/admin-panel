@@ -82,7 +82,7 @@ public class UserView extends CustomAppLayout {
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);
 
-        grid.addColumn(user -> user.getRoles().stream().map(Role::getTitle)
+        grid.addColumn(user -> user.getRoles().stream().map(Role::getHumanized)
                 .collect(Collectors.joining(", ")))
                 .setHeader("РОЛИ")
                 .setTextAlign(ColumnTextAlign.CENTER)
