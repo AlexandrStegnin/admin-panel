@@ -61,15 +61,16 @@ public class UserView extends CustomAppLayout {
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);
 
+        grid.addColumn(user -> user.getProfile().getLastName())
+                .setHeader("ФАМИЛИЯ")
+                .setTextAlign(ColumnTextAlign.CENTER)
+                .setFlexGrow(1);
+
         grid.addColumn(user -> user.getProfile().getFirstName())
                 .setHeader("ИМЯ")
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);
 
-        grid.addColumn(user -> user.getProfile().getLastName())
-                .setHeader("ФАМИЛИЯ")
-                .setTextAlign(ColumnTextAlign.CENTER)
-                .setFlexGrow(1);
 
         grid.addColumn(user -> user.getProfile().getPatronymic())
                 .setHeader("ОТЧЕСТВО")
@@ -96,7 +97,9 @@ public class UserView extends CustomAppLayout {
                 .setEditorComponent(new Div())
                 .setHeader("ДЕЙСТВИЯ")
                 .setFlexGrow(2);
-
+        grid.getColumns()
+                .forEach(column -> column.setAutoWidth(true));
+        grid.setClassName("my-grid");
         /* вертикальный слой, на котором размещаем кнопку и под ней Grid */
         VerticalLayout verticalLayout = new VerticalLayout(addNewBtn, grid);
         verticalLayout.setAlignItems(FlexComponent.Alignment.END);
