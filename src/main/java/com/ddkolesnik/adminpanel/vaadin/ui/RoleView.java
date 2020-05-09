@@ -43,10 +43,14 @@ public class RoleView extends CustomAppLayout {
     private void init() {
         addNewBtn.addClickListener(e -> showRoleForm(OperationEnum.CREATE, new Role()));
         grid.setDataProvider(dataProvider);
-        grid.getStyle().set("font-size", "14px");
 
         grid.addColumn(Role::getTitle)
                 .setHeader("НАЗВАНИЕ")
+                .setTextAlign(ColumnTextAlign.CENTER)
+                .setFlexGrow(1);
+
+        grid.addColumn(Role::getHumanized)
+                .setHeader("ОТОБРАЖАЕМОЕ ИМЯ")
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);
 
@@ -57,6 +61,8 @@ public class RoleView extends CustomAppLayout {
                 .setEditorComponent(new Div())
                 .setFlexGrow(2)
                 .setHeader("ДЕЙСТВИЯ");
+
+        grid.setClassName("my-grid");
 
         VerticalLayout verticalLayout = new VerticalLayout();
         verticalLayout.add(addNewBtn, grid);

@@ -30,6 +30,7 @@ public class RoleForm extends Dialog {
     final RoleService roleService;
     final Role role;
     final TextField title;
+    final TextField humanized;
     final Binder<Role> roleBinder;
     final OperationEnum operation;
     final Button cancel;
@@ -40,6 +41,7 @@ public class RoleForm extends Dialog {
 
     public RoleForm(OperationEnum operation, Role role, RoleService roleService) {
         this.title = new TextField("НАЗВАНИЕ");
+        this.humanized = new TextField("ОТОБРАЖАЕМОЕ ИМЯ");
         this.roleBinder = new BeanValidationBinder<>(Role.class);
         this.roleService = roleService;
         this.operation = operation;
@@ -56,7 +58,7 @@ public class RoleForm extends Dialog {
         prepareButtons(operation);
         stylizeForm();
         buttons.add(submit, cancel);
-        content.add(title, buttons);
+        content.add(title, humanized, buttons);
         add(content);
         roleBinder.setBean(role);
         roleBinder.bindInstanceFields(this);
@@ -98,6 +100,10 @@ public class RoleForm extends Dialog {
         title.setPlaceholder("ВВЕДИТЕ НАЗВАНИЕ");
         title.setRequiredIndicatorVisible(true);
         title.setWidthFull();
+
+        humanized.setPlaceholder("ВВЕДИТЕ ОТОБРАЖАЕМОЕ ИМЯ");
+        humanized.setRequiredIndicatorVisible(true);
+        humanized.setWidthFull();
 
         buttons.setWidthFull();
         buttons.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
