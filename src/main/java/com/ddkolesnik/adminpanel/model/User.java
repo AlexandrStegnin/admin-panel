@@ -122,17 +122,6 @@ public class User implements UserDetails {
         this.profile.setUser(this);
     }
 
-    public User(String login, String passwordHash, boolean enabled, boolean accountNonExpired,
-                boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> roles) {
-        this.login = login;
-        this.passwordHash = passwordHash;
-        this.enabled = enabled;
-        this.accountNonExpired = accountNonExpired;
-        this.credentialsNonExpired = credentialsNonExpired;
-        this.accountNonLocked = accountNonLocked;
-        this.roles = roles.stream().map(Role::new).collect(Collectors.toSet());
-    }
-
     public User(UserDetails userDetails) {
         this.login = userDetails.getUsername();
         this.enabled = userDetails.isEnabled();
