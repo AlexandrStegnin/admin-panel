@@ -35,6 +35,8 @@ public class MainLayout extends Div implements RouterLayout, PageConfigurator {
 //        // Materialize Css
         settings.addLink("stylesheet", "./VAADIN/css/materialize.css");
 
+        settings.addLink("stylesheet", "./VAADIN/css/grid-style.css");
+
 //        // jQuery & bootstrap js
         settings.getUi().getPage().addJavaScript("../VAADIN/plugins/jquery/jquery.js");
         settings.getUi().getPage().addJavaScript("../VAADIN/plugins/bootstrap/js/bootstrap.js");
