@@ -34,6 +34,9 @@ public class Role extends AbstractEntity implements GrantedAuthority {
     @Size(min = 3, max = 20, message = "Название роли должно быть более 2 и менее 21 символа")
     private String title;
 
+    @Column(name = "humanized")
+    private String humanized;
+
     @Override
     @JsonIgnore
     public String getAuthority() {
@@ -41,7 +44,7 @@ public class Role extends AbstractEntity implements GrantedAuthority {
     }
 
     @PrePersist
-    public void serRole() {
+    public void setRole() {
         if (!title.trim().toUpperCase().startsWith(ROLE_PREFIX)) title = ROLE_PREFIX + title.trim().toUpperCase();
         else title = title.trim().toUpperCase();
     }
