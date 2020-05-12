@@ -53,7 +53,7 @@ public class UserView extends CustomAppLayout {
         this.dataProvider = new ListDataProvider<>(getAllUsers()); // инициализация провайдера с вставкой в него данных
         this.addNewBtn = VaadinViewUtils.createButton(
                 "СОЗДАТЬ ПОЛЬЗОВАТЕЛЯ", "add", "submit", "8px 13px 8px 13px");
-        this.roleComboBox = new ComboBox<>("Фильтр: ");
+        this.roleComboBox = new ComboBox<>("ФИЛЬТР ПО РОЛИ: ");
 
         init(); // инициализируем форму
     }

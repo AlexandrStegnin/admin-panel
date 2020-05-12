@@ -3,6 +3,7 @@ package com.ddkolesnik.adminpanel.vaadin.ui;
 import com.ddkolesnik.adminpanel.configuration.support.Internationalization;
 import com.ddkolesnik.adminpanel.repository.AuthRepository;
 import com.ddkolesnik.adminpanel.vaadin.support.VaadinViewUtils;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.component.login.LoginOverlay;
@@ -18,7 +19,7 @@ import static com.ddkolesnik.adminpanel.configuration.support.Location.LOGIN_PAG
  */
 
 @PageTitle("АВТОРИЗАЦИЯ")
-@Route(value = LOGIN_PAGE, layout = MainLayout.class)
+@Route(value = LOGIN_PAGE)
 public class LoginView extends HorizontalLayout {
 
     private final AuthRepository authRepository;
@@ -43,7 +44,7 @@ public class LoginView extends HorizontalLayout {
             boolean authenticated = authenticate(e);
             if (authenticated) {
                 loginForm.close();
-                getUI().ifPresent(ui -> ui.navigate(ADMIN_PAGE));
+                UI.getCurrent().getPage().setLocation(ADMIN_PAGE);
             } else {
                 loginForm.setError(true);
             }
