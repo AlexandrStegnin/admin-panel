@@ -50,7 +50,7 @@ public final class SecurityUtils {
 	 * Checks if access is granted for the current user for the given secured view,
 	 * defined by the view class.
 	 *
-	 * @param securedClass
+	 * @param securedClass View class
 	 * @return true if access is granted, false otherwise.
 	 */
 	public static boolean isAccessGranted(Class<?> securedClass) {
