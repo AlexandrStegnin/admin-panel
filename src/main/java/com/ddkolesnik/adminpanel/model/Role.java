@@ -17,22 +17,19 @@ import static com.ddkolesnik.adminpanel.configuration.support.Constant.ROLE_PREF
 
 @Data
 @Entity
-@Table(name = "role")
+@Table(name = "app_role")
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = false, of = "id")
 public class Role extends AbstractEntity implements GrantedAuthority {
 
     @Id
-    @TableGenerator(name = "roleSeqStore", table = "SEQ_STORE",
-            pkColumnName = "SEQ_NAME", pkColumnValue = "ROLE.ID.PK",
-            valueColumnName = "SEQ_VALUE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "roleSeqStore")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(name = "role")
+    @Column(name = "name")
     @Size(min = 3, max = 20, message = "Название роли должно быть более 2 и менее 21 символа")
-    private String title;
+    private String name;
 
     @Column(name = "humanized")
     private String humanized;
@@ -40,16 +37,16 @@ public class Role extends AbstractEntity implements GrantedAuthority {
     @Override
     @JsonIgnore
     public String getAuthority() {
-        return title.startsWith(ROLE_PREFIX) ? title : ROLE_PREFIX + title;
+        return name.startsWith(ROLE_PREFIX) ? name : ROLE_PREFIX + name;
     }
 
     @PrePersist
     public void setRole() {
-        if (!title.trim().toUpperCase().startsWith(ROLE_PREFIX)) title = ROLE_PREFIX + title.trim().toUpperCase();
-        else title = title.trim().toUpperCase();
+        if (!name.trim().toUpperCase().startsWith(ROLE_PREFIX)) name = ROLE_PREFIX + name.trim().toUpperCase();
+        else name = name.trim().toUpperCase();
     }
 
     public Role(GrantedAuthority authority) {
-        this.title = authority.getAuthority();
+        this.name = authority.getAuthority();
     }
 }

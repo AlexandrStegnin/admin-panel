@@ -1,12 +1,9 @@
 package com.ddkolesnik.adminpanel.vaadin.support;
 
-import com.ddkolesnik.adminpanel.model.Role;
-import com.ddkolesnik.adminpanel.model.User;
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Html;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
@@ -24,8 +21,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -65,37 +60,39 @@ public class VaadinViewUtils {
         return dialog;
     }
 
-    public static Div makeUserRolesDiv(User user, List<Role> availableRoles) {
-        Div checkBoxDiv = new Div();
-        Div label = new Div();
-        label.setText("Choose roles");
-        label.getStyle().set("margin", "10px 0");
-        checkBoxDiv.add(label);
-        Div contentDiv = new Div();
-        if (user.getRoles() == null) user.setRoles(new HashSet<>());
-        availableRoles.forEach(role -> {
-            // создаём checkbox'ы из доступных ролей и отмечаем те, которые есть у пользователя
-            Checkbox checkbox = new Checkbox(
-                    role.getTitle(),
-                    user.getRoles().contains(role));
-            checkbox.addValueChangeListener(e -> {
-
-                // вешаем обработчик добавить/удалить роль у пользователя
-                String roleName = e.getSource().getElement().getText();
-                Role userRole = availableRoles.stream()
-                        .filter(r -> r.getTitle().equalsIgnoreCase(roleName))
-                        .findAny().orElse(null);
-                if (e.getValue()) {
-                    user.getRoles().add(userRole);
-                } else {
-                    user.getRoles().remove(userRole);
-                }
-            });
-            contentDiv.add(checkbox);
-        });
-        checkBoxDiv.add(contentDiv);
-        return checkBoxDiv;
-    }
+//    public static Div makeUserRolesDiv(User user, List<Role> availableRoles) {
+//        Div checkBoxDiv = new Div();
+//        Div label = new Div();
+//        label.setText("Choose roles");
+//        label.getStyle().set("margin", "10px 0");
+//        checkBoxDiv.add(label);
+//        Div contentDiv = new Div();
+//        if (user.getRole() == null) {
+//            user.setRole(new Role());
+//        }
+//        availableRoles.forEach(role -> {
+//            // создаём checkbox'ы из доступных ролей и отмечаем те, которые есть у пользователя
+//            Checkbox checkbox = new Checkbox(
+//                    role.getTitle(),
+//                    user.getRole().equals(role));
+//            checkbox.addValueChangeListener(e -> {
+//
+//                // вешаем обработчик добавить/удалить роль у пользователя
+//                String roleName = e.getSource().getElement().getText();
+//                Role userRole = availableRoles.stream()
+//                        .filter(r -> r.getTitle().equalsIgnoreCase(roleName))
+//                        .findAny().orElse(null);
+//                if (e.getValue()) {
+//                    user.getRole().add(userRole);
+//                } else {
+//                    user.getRole().remove(userRole);
+//                }
+//            });
+//            contentDiv.add(checkbox);
+//        });
+//        checkBoxDiv.add(contentDiv);
+//        return checkBoxDiv;
+//    }
 
     // в vaadin такая особенность, можно указать картинки, которые лежат в определённых папках (VAADIN/STATIC/IMAGES)
     // точно не помню путь, но он задан довольно жёстко, или делать это как здесь динамически

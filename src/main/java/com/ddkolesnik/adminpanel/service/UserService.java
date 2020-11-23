@@ -53,9 +53,10 @@ public class UserService {
 
     @Transactional
     public User create(User user) {
-        user.setPasswordHash(encoder.encode(user.getPassword()));
-        if (Objects.equals(null, user.getRoles()) || user.getRoles().isEmpty())
-            user.setRoles(Collections.singleton(roleService.findByTitle(ROLE_USER)));
+        user.setPassword(encoder.encode(user.getPassword()));
+        if (user.getRole() == null) {
+            user.setRole(roleService.findByName(ROLE_USER));
+        }
         return userRepository.save(user);
     }
 
@@ -106,21 +107,23 @@ public class UserService {
         User dbUser = userRepository.findByLogin(secUser.getLogin());
         // Пароль не сохраняется (transient !), сохраняется только HASH
         if (!StringUtils.isEmpty(secUser.getPassword())) {
-            secUser.setPasswordHash(passwordToHash(secUser.getPassword()));
+            secUser.setPassword(passwordToHash(secUser.getPassword()));
         } else {
             // нам нужно сохранить пароль (если он не задан)
             // подставляем старый пароль из базы
-            secUser.setPasswordHash(dbUser.getPasswordHash());
+            secUser.setPassword(dbUser.getPassword());
         }
-        if (Objects.equals(null, secUser.getRoles())) secUser.setRoles(dbUser.getRoles());
+        if (secUser.getRole() == null) {
+            secUser.setRole(dbUser.getRole());
+        }
         if (Objects.equals(null, secUser.getProfile())) secUser.setProfile(dbUser.getProfile());
         return userRepository.save(secUser);
     }
 
     @Transactional
     public void registerNewUser(User newUser) {
-        newUser.setPasswordHash(passwordToHash(newUser.getPassword()));
-        newUser.setRoles(new HashSet<>(Collections.singletonList(roleService.getDefaultUserRole())));
+        newUser.setPassword(passwordToHash(newUser.getPassword()));
+        newUser.setRole(roleService.getDefaultUserRole());
         userRepository.save(newUser);
     }
 
@@ -132,7 +135,7 @@ public class UserService {
     public void changePassword(long userId, String passwordNew) {
         //TODO добавть проверок для пароля
         User userDb = getById(userId);
-        userDb.setPasswordHash(passwordToHash(passwordNew));
+        userDb.setPassword(passwordToHash(passwordNew));
         userRepository.save(userDb);
     }
 
@@ -160,7 +163,7 @@ public class UserService {
             } catch (IOException e) {
                 throw new RuntimeException("Ошибка копирования файла", e);
             }
-            user.getProfile().setAvatar(fileName);
+//            user.getProfile().setAvatar(fileName);
         }
     }
 

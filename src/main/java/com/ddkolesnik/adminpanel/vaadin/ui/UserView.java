@@ -20,7 +20,6 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.router.Route;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.ddkolesnik.adminpanel.configuration.support.Location.USERS_PAGE;
 
@@ -88,8 +87,7 @@ public class UserView extends CustomAppLayout {
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);
 
-        grid.addColumn(user -> user.getRoles().stream().map(Role::getHumanized)
-                .collect(Collectors.joining(", ")))
+        grid.addColumn(user -> user.getRole().getHumanized())
                 .setHeader("РОЛИ")
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);
@@ -131,7 +129,7 @@ public class UserView extends CustomAppLayout {
     private void applyFilter(ListDataProvider<User> dataProvider) {
         dataProvider.clearFilters();
         if (roleComboBox.getValue() != null) {
-            dataProvider.addFilter(user -> user.getRoles().contains(roleComboBox.getValue()));
+            dataProvider.addFilter(user -> user.getRole().equals(roleComboBox.getValue()));
         }
     }
 

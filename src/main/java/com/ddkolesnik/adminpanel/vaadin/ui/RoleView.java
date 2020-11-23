@@ -44,7 +44,7 @@ public class RoleView extends CustomAppLayout {
         addNewBtn.addClickListener(e -> showRoleForm(OperationEnum.CREATE, new Role()));
         grid.setDataProvider(dataProvider);
 
-        grid.addColumn(Role::getTitle)
+        grid.addColumn(Role::getHumanized)
                 .setHeader("НАЗВАНИЕ")
                 .setTextAlign(ColumnTextAlign.CENTER)
                 .setFlexGrow(1);

@@ -32,12 +32,12 @@ public class UserProfile extends AbstractEntity {
     @MapsId
     private User user;
 
-    @Column
+    @Column(name = "first_name")
     @NotNull(message = "Необходимо указать имя")
     @Size(min = 1, max = 100, message = "Имя должно быть от 1 до 100 символов")
     private String firstName;
 
-    @Column
+    @Column(name = "last_name")
     @NotNull(message = "Необходимо указать фамилию")
     @Size(min = 1, max = 100, message = "Фамилия должна быть от 1 до 100 символов")
     private String lastName;
@@ -52,7 +52,7 @@ public class UserProfile extends AbstractEntity {
     @Size(min = 6, message = "Необходимо указать корректный email")
     private String email;
 
-    @Column
-    private String avatar;
+//    @Column
+//    private String avatar;
 
 }

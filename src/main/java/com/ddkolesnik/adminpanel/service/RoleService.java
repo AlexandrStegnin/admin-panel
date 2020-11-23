@@ -28,8 +28,8 @@ public class RoleService {
         return roleRepository.findById(id).orElse(null);
     }
 
-    public Role findByTitle(String title) {
-        return roleRepository.findByTitle(title);
+    public Role findByName(String name) {
+        return roleRepository.findByName(name);
     }
 
     public Role create(Role role) {
@@ -49,7 +49,7 @@ public class RoleService {
     }
 
     public Role getDefaultUserRole() {
-        return findByTitle(ROLE_USER);
+        return findByName(ROLE_USER);
     }
 
     public Long count() {

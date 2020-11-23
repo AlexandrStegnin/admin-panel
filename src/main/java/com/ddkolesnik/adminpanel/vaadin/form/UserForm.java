@@ -146,7 +146,7 @@ public class UserForm extends Dialog {
         email.setWidthFull();
 
         roles.setLabel("ВЫБЕРИТЕ РОЛИ");
-        roles.setItemLabelGenerator(Role::getTitle);
+        roles.setItemLabelGenerator(Role::getHumanized);
         roles.setItems(getAllRoles());
 
         password.setPlaceholder("ПАРОЛЬ");
